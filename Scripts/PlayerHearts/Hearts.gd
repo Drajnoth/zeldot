@@ -18,6 +18,7 @@ extends Node2D
 )
 var heart_color: Color = Color(55, 0, 0, 255)
 var hearts_position_array: Array[Vector2] = []
+var hearts_position_array_locked = false
 
 #Initialize new hearts script.
 @onready var hearts_script = %HeartsScript
@@ -45,7 +46,7 @@ func init_hearts_positions():
 		hearts_position_array[i].x = heart_position_x
 		heart_position_x += hearts_distance_to_each_x
 
-func append_hearts_positions():
+func append_hearts_position():
 	#Get last array index position.
 	var heart_position_start = 0
 	var heart_position_x = hearts_position_array.back().x
@@ -62,12 +63,28 @@ func append_hearts_positions():
 	#Append new heart position to array.
 	hearts_position_array.append(Vector2(heart_position_x, heart_position_y))
 
+func remove_hearts_position():
+	if !hearts_position_array_locked:
+		hearts_position_array.pop_back()
+		if hearts_script.get_heart_amount() == 0:
+			lock_hearts_positions()
+
+#Lock adding or removing hearts from the array to avoid array underflow.
+func lock_hearts_positions():
+	hearts_position_array_locked = true
+
+func unlock_hearts_positions():
+	hearts_position_array_locked = false
+
 func _ready():
 	init_hearts_positions()
 
 func _physics_process(_delta):
-	if hearts_script.add_heart_input and hearts_script.get_heart_amount() != hearts_position_array.size():
-		append_hearts_positions()
+	print(hearts_script.get_heart_amount())
+	if hearts_script.add_heart_input and hearts_script.get_heart_amount() != hearts_position_array.size() and !hearts_position_array_locked:
+		append_hearts_position()
+	if hearts_script.remove_heart_input:
+		remove_hearts_position()
 	queue_redraw()
 
 func _draw():
