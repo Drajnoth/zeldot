@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://byhwy3dt2c0kr"]
+
+[ext_resource type="Script" path="res://Scripts/UserInput.gd" id="1_k781k"]
+
+[node name="UserSettings" type="Node"]
+
+[node name="UserInput" type="Node" parent="."]
+script = ExtResource("1_k781k")

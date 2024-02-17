@@ -11,8 +11,18 @@ config_version=5
 [application]
 
 config/name="Zeldot"
+run/main_scene="res://Resources/Scenes/MainScene.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="res://Art/icon.svg"
+
+[file_customization]
+
+folder_colors={
+"res://Art/": "yellow",
+"res://Resources/": "purple",
+"res://Resources/Scenes/": "purple",
+"res://Scripts/": "green"
+}
 
 [rendering]
 
