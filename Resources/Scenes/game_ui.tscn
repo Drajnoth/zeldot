@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://couvtj48wj7a0"]
+
+[ext_resource type="Script" path="res://Scripts/PlayerHearts/HeartsScript.gd" id="1_caaae"]
+[ext_resource type="Script" path="res://Scripts/PlayerHearts/Hearts.gd" id="2_eofo6"]
+
+[node name="GameUI" type="Node2D"]
+
+[node name="HeartsPosition" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(964, 34)
+
+[node name="HeartsScript" type="Node" parent="HeartsPosition"]
+unique_name_in_owner = true
+script = ExtResource("1_caaae")
+
+[node name="Hearts" type="Node2D" parent="HeartsPosition"]
+script = ExtResource("2_eofo6")

@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="UserInputResource" load_steps=2 format=3 uid="uid://d4ekvfjglwwnu"]
+
+[ext_resource type="Script" path="res://Scripts/UserInputResource.gd" id="1_hmp7d"]
+
+[resource]
+script = ExtResource("1_hmp7d")
