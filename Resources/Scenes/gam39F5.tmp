@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://Scripts/PlayerHearts/HeartsScript.gd" id="1_caaae"]
 [ext_resource type="Script" path="res://Scripts/PlayerHearts/Hearts.gd" id="2_eofo6"]
 [ext_resource type="Script" path="res://Scripts/ItemUI/ItemUI.gd" id="3_u02ah"]
-[ext_resource type="Script" path="res://Resources/Scenes/HeartsFlowContainer.gd" id="4_rb7nr"]
-[ext_resource type="Script" path="res://Scripts/PlayerHearts/HeartsLabel.gd" id="4_s2lef"]
+[ext_resource type="Script" path="res://Resources/Scenes/HeartsLabel.gd" id="4_s2lef"]
+[ext_resource type="Script" path="res://Resources/Scenes/SquareHeart.gd" id="5_ptxkq"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4bubw"]
 
@@ -32,10 +32,13 @@ offset_left = -128.0
 offset_top = 1.0
 offset_bottom = 167.0
 grow_horizontal = 0
-script = ExtResource("4_rb7nr")
 
 [node name="Label" type="Label" parent="FlowContainer"]
 layout_mode = 2
 text = "Health"
 label_settings = SubResource("LabelSettings_4bubw")
 script = ExtResource("4_s2lef")
+
+[node name="ColorRect" type="ColorRect" parent="FlowContainer"]
+layout_mode = 2
+script = ExtResource("5_ptxkq")

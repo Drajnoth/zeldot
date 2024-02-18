@@ -4,12 +4,11 @@ extends Node2D
 @onready var screen_height = get_tree().get_root().size.y
 @onready var screen_width = get_tree().get_root().size.x
 
-#Get HeartsPosition screen position.
-@onready var hearts_position_position = %HeartsPosition.position
-
 #Calculate distance needed between each heart.
 @onready var hearts_distance_to_each_x = screen_width / 22
 @onready var hearts_distance_to_each_y = screen_width / 22
+@onready var heart_x_padding = screen_width / 42
+@onready var heart_y_padding = screen_width / 50
 
 #Set heart data.
 @onready var hearts_size: Vector2 = Vector2(
@@ -23,7 +22,7 @@ var hearts_position_array_locked = false
 #Initialize new hearts script.
 @onready var hearts_script = %HeartsScript
 
-func init_hearts_positions():
+func init_hearts_positions() -> void:
 	#Initialize correct heart array size.
 	hearts_position_array.resize(hearts_script.get_heart_amount())
 	hearts_position_array.fill(Vector2.ZERO)
@@ -38,7 +37,7 @@ func init_hearts_positions():
 		hearts_position_array[i].x += heart_position_x
 		hearts_position_array[i].y = heart_position_y
 
-		if hearts_position_array[i].x >= screen_width - hearts_position_position.x - hearts_size.x:
+		if hearts_position_array[i].x >= screen_width - position.x - hearts_size.x:
 			heart_position_y += hearts_distance_to_each_y
 			hearts_position_array[i].y = heart_position_y
 			heart_position_x = heart_position_start
@@ -46,7 +45,7 @@ func init_hearts_positions():
 		hearts_position_array[i].x = heart_position_x
 		heart_position_x += hearts_distance_to_each_x
 
-func append_hearts_position():
+func append_hearts_position() -> void:
 	#Get last array index position.
 	var heart_position_start = 0
 	var heart_position_x = hearts_position_array.back().x
@@ -56,38 +55,41 @@ func append_hearts_position():
 	heart_position_x += hearts_distance_to_each_x
 
 	#Set heart position y axis if it's going offscreen.
-	if heart_position_x >= screen_width - hearts_position_position.x - hearts_size.x:
+	if heart_position_x >= screen_width - position.x - hearts_size.x:
 		heart_position_y += hearts_distance_to_each_y
 		heart_position_x = heart_position_start
 
 	#Append new heart position to array.
 	hearts_position_array.append(Vector2(heart_position_x, heart_position_y))
 
-func remove_hearts_position():
+func remove_hearts_position() -> void:
 	if !hearts_position_array_locked:
 		hearts_position_array.pop_back()
 		if hearts_script.get_heart_amount() == 0:
 			lock_hearts_positions()
 
 #Lock adding or removing hearts from the array to avoid array underflow.
-func lock_hearts_positions():
+func lock_hearts_positions() -> void:
 	hearts_position_array_locked = true
+	self.queue_free()
 
-func unlock_hearts_positions():
+func unlock_hearts_positions() -> void:
 	hearts_position_array_locked = false
 
-func _ready():
+func _ready() -> void:
+	position.x = (screen_width - hearts_size.x - hearts_distance_to_each_x * 4) - heart_x_padding
+	position.y = (heart_y_padding)
 	init_hearts_positions()
+	set_physics_process(true)
 
-func _physics_process(_delta):
-	print(hearts_script.get_heart_amount())
+func _physics_process(_delta) -> void:	
 	if hearts_script.add_heart_input and hearts_script.get_heart_amount() != hearts_position_array.size() and !hearts_position_array_locked:
 		append_hearts_position()
 	if hearts_script.remove_heart_input:
 		remove_hearts_position()
 	queue_redraw()
 
-func _draw():
+func _draw() -> void:
 	for i in hearts_position_array.size():
 		draw_rect(
 		Rect2(hearts_position_array[i], hearts_size), 
